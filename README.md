@@ -1,1 +1,1 @@
-<h1>Active Directory Synchronization with Okta</h1>
+<h1>Active Directory Integration with Okta</h1>

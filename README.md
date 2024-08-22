@@ -98,93 +98,34 @@ To test this further, I navigated to ‘Active Directory Users and Computers’ 
 Custom attribute mappings are crucial for ensuring that specific user data from Active Directory is accurately represented in Okta, enabling consistent identity management across integrated downstream applications. This process ensures that user attributes are correctly synchronized. 
  <br/>
  <br/>
-To configure Dropbox provisioning, refer to the following documentation: https://help.okta.com/en-us/content/topics/provisioning/dropbox/drbx-main.htm. In Okta, navigate to ‘Applications > Dropbox Business > Provisioning’ and click ‘Configure API Integration.’ Check the ‘Enable API integration’ option and click ‘Authenticate with Dropbox Business.’
+For this use case, we will map the ‘samAccountName’ from Active Directory into Okta. Since ‘samAccountName’ is not a default attribute in Okta, we need to create it as a custom attribute. In Okta, navigate to ‘Profile Editor,’ then to the ‘Okta User Profile,’ click ‘Add Attribute,’ and add ‘samAccountName’ as a string custom attribute.
  <br/>
  <br/>
- <img src="https://i.imgur.com/nioU0VS.png" alt="Dropbox API Integration"/>
+ <img src="https://i.imgur.com/9KpnuPj.png" alt="Create Custom Attribute"/>
     <br/>
  <br/>
-Set up provisioning from App to Okta and from Okta to App, along with attribute mappings, according to your requirements. Once configured, click ‘Save.’
+Next, in ‘Profile Editor,’ click the ‘Mappings’ button next to the Active Directory user profile. Map the ‘appuser.samAccountName’ attribute from Active Directory to the custom ‘samAccountName’ attribute in Okta. I used Okta’s preview feature to test the mapping with the ‘Jim’ user before saving the configuration.
  <br/>
  <br/>
-   <img src="https://i.imgur.com/KcTpPut.png" alt="Dropbox Provisioning"/>
+   <img src="https://i.imgur.com/JqjF9La.png" alt="Attribute Mapping"/>
     <br/>
  <br/>
-   <img src="https://i.imgur.com/4FMstw8.png" alt="Dropbox Attribute Mapping"/>
-    <br/>
- <br/>
- In addition, Okta provides the option to schedule imports to run automatically, or select 'never' if you prefer to run imports manually.
-     <br/>
- <br/>
-   <img src="https://i.imgur.com/IugQrRx.png" alt="Schedule Imports"/>
-    <br/>
- <br/>
-To provision the accounts, navigate to ‘Import > Import Now.’ After logging into Dropbox, we can see that the ‘Sales’ group containing the user Sam has been automatically provisioned. 
-  <br/>
- <br/>
-   <img src="https://i.imgur.com/Ze1kXqu.png" alt="Dropbox Account Testing"/>
-
-<h2>Testing and Troubleshooting</h2> 
- <p align="center">
-Although Sam was successfully added as a user in Dropbox, an error message stating 'Could not validate SAML assertion' appeared when attempting to SSO from Sam's user dashboard.
- <br/>
- <br/>
-Dropbox offers documentation for resolving this specific error, available here: https://help.dropbox.com/security/resolve-SAML-error. 
- <br/>
- <br/>
-To address this issue, I returned to Okta, downloaded a new X.509 certificate, and then uploaded the updated certificate to the Dropbox Business Admin Console. As shown in the security logs from Dropbox, after re-uploading the certificate, Sam was able to successfully sign in to his newly provisioned account.
- <br/>
- <br/>
- <img src="https://i.imgur.com/4n0ZzFY.png" alt="Dropbox Logs"/>
- <br/>
- <br/>
- <img src="https://i.imgur.com/E17Gz6Z.png" alt="Dropbox Login"/>
-
- <h2>Enabling Group Push</h2> 
- <p align="center">
-I will now assign the 'Dev' group, which Emma was added to earlier, to Dropbox Business by navigating to the 'Assignments' tab of the Dropbox Business app in Okta. Emma can now use Single Sign-On (SSO) to access Dropbox Business directly from her Okta User Dashboard.
- <br/>
- <br/>
- <img src="https://i.imgur.com/ebzHODK.png" alt="Dropbox Group Assignments"/>
- <br/>
- <br/>
- <img src="https://i.imgur.com/9tOKnoB.png" alt="Okta User Dashboard"/>
- <br/>
- <br/>
-With automatic provisioning and user import from Okta to Dropbox, Emma is now a member of Dropbox without needing to manually create an account. Upon accepting the invite link sent from Dropbox Business, her account is automatically set up. As depicted in the security logs, Emma was able to SSO successfully using SAML. 
- <br/>
- <br/> 
- <img src="https://i.imgur.com/9YyylQU.png" alt="Dropbox Logs"/>
- <br/>
- <br/>
-While changes—such as adding, editing, or removing members from the Sales or Dev teams—are automatically updated in Dropbox, Group Push ensures that group memberships and access rights are consistently synchronized across platforms for provisioning-enabled applications.
- <br/>
- <br/>
-To enable Group Push, navigate to the 'Group Push' tab in Okta and click 'Push Groups.' From there, you can search for and select the desired groups by name to activate Group Push. As shown, both the 'Dev' and 'Sales' groups have been pushed to Dropbox.
- <br/>
- <br/> 
- <img src="https://i.imgur.com/KtDmQCF.png" alt="Configure Group Push"/>
- <br/>
- <br/>
-Upon accessing the Dropbox Admin Console, you will see that the 'Dev' and 'Sales' groups have been automatically created in Dropbox. 
- <br/>
- <br/> 
- <img src="https://i.imgur.com/Ww3jHQ1.png" alt="Dropbox Groups"/>
+   <img src="https://i.imgur.com/fJHfupT.png" alt="Attribute Testing"/>
 
 <h2>Key takeaways:</h2>
-This project focused on enhancing user management and access control by integrating Okta with Dropbox Business. The primary objective was to streamline user onboarding and automate account provisioning to ensure efficient access management across platforms. Utilizing SAML 2.0 for Dropbox Business addressed the challenge of providing seamless Single Sign-On (SSO) and automated provisioning, thereby reducing administrative overhead and ensuring consistent user access.
+This project focused on the integration of Active Directory (AD) with Okta to streamline user management and enhance security. The primary goal was to synchronize user attributes and import users from AD into Okta, ensuring that identity management was centralized and consistent across various applications.
  <br/>
  <br/>
-The implementation process involved assigning users to the 'Sales' and 'Dev' groups within Dropbox Business via Okta. Provisioning was enabled to ensure that new users created in Okta automatically received Dropbox accounts. Additionally, the Group Push feature was configured to synchronize group memberships between Okta and Dropbox Business.
+The integration was crucial for reducing administrative overhead and improving user experience by ensuring that user data was consistently reflected across systems. By mapping attributes from AD to Okta, the project facilitated seamless access to downstream applications and simplified the management of user identities.
  <br/>
  <br/>
-The project delivered significant benefits, including reduced manual administrative tasks, enhanced security through centralized authentication, and an improved user experience with integrated SSO. Effective group management was achieved through automated provisioning and Group Push, ensuring consistent access controls across platforms. 
+The implementation process involved several key steps. First, the Okta AD Agent was installed on the host server, and a new Organizational Unit (OU) was created in AD for testing purposes. Users were then created in this OU and imported into Okta to test the integration.
  <br/>
  <br/>
-During the implementation, a "Could not validate SAML assertion" error was encountered, which was resolved by downloading and uploading a new X.509 certificate from Okta to the Dropbox Business Admin Console. Following this fix, users were able to successfully sign in to their newly provisioned Dropbox accounts.
+Custom attribute mappings were a significant part of the setup. Since ‘samAccountName’ is not a default attribute in Okta, it was necessary to create it as a custom attribute. This step involved configuring the attribute in Okta’s Profile Editor and mapping it to the corresponding AD attribute.
  <br/>
  <br/>
-Overall, the project significantly simplified user management in a multi-application environment, enhancing access management and operational efficiency. Key aspects included user onboarding, admin privileges, SAML integration, and automated lifecycle management. By streamlining these processes, the project reduced administrative overhead and improved consistency across platforms, ensuring a more seamless user experience.
+Finally, the integration was tested by importing users and using Okta’s preview feature to verify the configuration. This testing ensured that user data was accurately synced and that the integration was functioning as expected before finalizing the setup. Overall, the project successfully achieved its objectives by providing a streamlined solution for identity management and user access.
 
 <p align="center">
 <!--

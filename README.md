@@ -1,1 +1,1 @@
-<h1>Integrating Okta with Tailscale Using OIDC</h1>
+<h1>Active Directory Synchronization with Okta</h1>

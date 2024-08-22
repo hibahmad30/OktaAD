@@ -32,42 +32,70 @@ Once logged into the server, login to Okta and navigate to the Admin Console. Go
  <br/>
  <br/>
 <img src="https://i.imgur.com/pO9SRO0.png" alt="Download Agent"/>
- 
-<h2>Integrate Dropbox Business Using SAML</h2> 
+ <br/>
+ <br/>
+ Once downloaded, open the installer (.exe) file and complete the installation. Enter the domain name that you want the agent to manage. The Okta AD Agent will run as a domain user, and I’ll be using the OktaService account for this purpose. If needed, you can specify a proxy server through which the AD agent will connect, but I will be using the default proxy settings.
+ <br/>
+ <br/>
+Next, enter your Okta domain, and navigate to provide the registration link and code. This will register your domain with Okta, allowing you to proceed with the directory integration configuration directly in Okta. 
+  <br/>
+ <br/>
+<img src="https://i.imgur.com/edk8krA.png" alt="Register Domain"/>
+ <br/>
+ <br/> 
+<img src="https://i.imgur.com/oBJVlZR.png" alt="Okta Registration"/>
+ <br/>
+ <br/> 
+The Okta AD Management Utility should now be running: 
+   <br/>
+ <br/>
+<img src="https://i.imgur.com/UiPeriU.png" alt="Okta AD Management Utility"/>
+ <br/>
+ <br/>
+ Navigate back to Okta and select the Organizational Unit(s) from which you want to import users and groups. Next, choose the attributes you wish to import from Active Directory into Okta. Once these configurations are set, the integration will be ready: 
+  <br/>
+ <br/>
+<img src="https://i.imgur.com/aUUxhJO.png" alt="Integration Ready"/>
+
+<h2>Import AD Users into Okta</h2> 
  <p align="center">
-We will now integrate Dropbox Business with SAML to streamline SSO for users in the ‘Sales’ group. Navigate to ‘Applications > Browse App Catalog,’ search for Dropbox Business, and click ‘Add Integration.’ In the Sign-On Options, select ‘SAML 2.0.’
+We will now test the integration by importing the two Active Directory-sourced users, ‘Jim’ and ‘Mary,’ into Okta. Navigate to the ‘Import’ tab of the directory integration and click ‘Import Now.’
  <br/>
  <br/>
- <img src="https://i.imgur.com/ySfqIh4.png" alt="Dropbox Integration"/>
+ <img src="https://i.imgur.com/aCryPxj.png" alt="Okta Import"/>
     <br/>
  <br/>
-To establish a trust relationship between Okta and Dropbox Business, additional configuration on the Dropbox Business side is required. I will follow the documentation available here: https://saml-doc.okta.com/SAML_Docs/How-to-Configure-SAML-2.0-for-Dropbox.html?baseAdminUrl=https://dev-60754792-admin.okta.com&app=dropbox_for_business&instanceId=0oaixkeibeUyc6L6c5d7.
+After confirming the import assignments, I navigated to ‘Directory > People’. As depicted, ‘Jim’ and ‘Mary’ have been added as users in our Okta Universal Directory. 
   <br/>
   <br/>
-First, create an account in Dropbox Business, then navigate to ‘Admin Console > Settings > Authentication > Single sign-on.’ Select the appropriate Single Sign-On option from the dropdown menu (Off, Optional, or Required).
-  <br/>
-  <br/>
-For the ‘Identity provider sign-in URL,’ click the ‘Add sign-in URL’ link and paste the URL provided in the Okta documentation. In this case, the link is:
-https://dev-60754792.okta.com/app/dropbox_for_business/exkixkeibduRi3Dxv5d7/sso/saml
-  <br/>
-  <br/>
-Download the X.509 certificate and upload it to Dropbox, then click ‘Save.’ Back in Okta, you can enable Silent Provisioning as needed and assign Dropbox Business to the ‘Sales’ group.
-<br/>
- <br/>
- <img src="https://i.imgur.com/RTuosxX.png" alt="Dropbox Configuration"/>
+ <img src="https://i.imgur.com/lt73ERg.png" alt="Okta Users"/>
  <br/>
  <br/>
- <img src="https://i.imgur.com/dJMl5AB.png" alt="Dropbox App Assignment"/>
+ <img src="https://i.imgur.com/Ne4W82g.png" alt="AD Integration Users"/>
     <br/>
  <br/>
-After signing into Sam’s Okta dashboard, we can see that Dropbox has been added as an app integration.
+To test this further, I navigated to ‘Active Directory Users and Computers’ on my Windows Server instance and created a new user in the ‘Okta Users’ OU named ‘Hannah Lee.’ I then returned to Okta and tested the import again to bring the newly created user into Okta.
  <br/>
  <br/>
- <img src="https://i.imgur.com/xagOAMs.png" alt="Okta Dashboard for Sales User"/>
+ <img src="https://i.imgur.com/iQl4Tjk.png" alt="New AD User"/>
+   <br/>
+ <br/>
+ <img src="https://i.imgur.com/RPun4cX.png" alt="Okta Users OU Update"/>
+    <br/>
+ <br/>
+  <img src="https://i.imgur.com/48h0BB9.png" alt="Okta Users Import"/>
+    <br/>
+ <br/>
+   <img src="https://i.imgur.com/urL4Dho.png" alt="Okta Directory"/>
+    <br/>
+ <br/> 
+  <img src="https://i.imgur.com/iL4lJ8q.png" alt="AD Users"/>
+    <br/>
+ <br/> 
   
-<h2>Configure Provisioning for Automated Lifecycle Management</h2> 
+<h2>Custom Attribute Mappings for User Data Integration</h2> 
  <p align="center">
-Although Sam was successfully assigned the app, he does not yet have an account in Dropbox. Manually creating accounts for each onboarded user can be time-consuming for administrators. To streamline this process, Okta offers automated user lifecycle provisioning.
+Custom attribute mappings are crucial for ensuring that specific user data from Active Directory is accurately represented in Okta, enabling consistent identity management across integrated downstream applications. This process ensures that user attributes are correctly synchronized. 
  <br/>
  <br/>
 To configure Dropbox provisioning, refer to the following documentation: https://help.okta.com/en-us/content/topics/provisioning/dropbox/drbx-main.htm. In Okta, navigate to ‘Applications > Dropbox Business > Provisioning’ and click ‘Configure API Integration.’ Check the ‘Enable API integration’ option and click ‘Authenticate with Dropbox Business.’

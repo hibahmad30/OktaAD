@@ -116,7 +116,10 @@ Next, in ‘Profile Editor,’ click the ‘Mappings’ button next to the Activ
 This project focused on the integration of Active Directory (AD) with Okta to streamline user management and enhance security. The primary goal was to synchronize user attributes and import users from AD into Okta, ensuring that identity management was centralized and consistent across various applications.
  <br/>
  <br/>
-The integration was crucial for reducing administrative overhead and improving user experience by ensuring that user data was consistently reflected across systems. By mapping attributes from AD to Okta, the project facilitated seamless access to downstream applications and simplified the management of user identities.
+This integration is particularly beneficial for hybrid environments, where organizations use a combination of on-premises and cloud-based systems. By linking AD with Okta, the integration supports seamless user management and attribute synchronization across both environments. This ensures that user data remains consistent and accessible, regardless of whether users are operating within the traditional AD infrastructure or interacting with cloud-based applications through Okta.
+ <br/>
+ <br/>
+The integration can also be leveraged for reducing administrative overhead and improving user experience by ensuring that user data was consistently reflected across systems. By mapping attributes from AD to Okta, the project facilitated seamless access to downstream applications and simplified the management of user identities.
  <br/>
  <br/>
 The implementation process involved several key steps. First, the Okta AD Agent was installed on the host server, and a new Organizational Unit (OU) was created in AD for testing purposes. Users were then created in this OU and imported into Okta to test the integration.
